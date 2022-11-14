@@ -29,6 +29,7 @@ public class UserController {
 
     @GetMapping(value="/getAll",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAll(){
+
         return userService.getAll();
     }
 

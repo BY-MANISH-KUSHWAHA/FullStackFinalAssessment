@@ -3,6 +3,7 @@ package com.authentication.service.authentication.Service;
 import com.authentication.service.authentication.Entity.Category;
 import com.authentication.service.authentication.Entity.Product;
 import com.authentication.service.authentication.Repository.CatergoryRepository;
+import com.authentication.service.authentication.Repository.ProductJDBC;
 import com.authentication.service.authentication.Repository.ProductRepository;
 import com.authentication.service.authentication.exceptionHandling.CategoryException;
 import com.authentication.service.authentication.exceptionHandling.ProductException;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -18,10 +20,36 @@ public class ProductService {
     private ProductRepository repository;
 
     @Autowired
+    private ProductJDBC productJDBC;
+
+    @Autowired
     private CatergoryRepository catergoryRepository;
 
     public List<Product> getAllProduct(){
         return repository.findAll();
+    }
+
+    public Product getProductByField(Product product) throws ProductException {
+        try{
+            if(product.getId()!=0){
+                return repository.findById(product.getId()).get();
+            }
+
+            if(product.getName()!=null){
+                return productJDBC.getProductByName(product.getName());
+            }
+            if(product.getPrice()!=null){
+                return productJDBC.getProductByPrice(product.getPrice());
+            }
+            if(product.getDescription()!=null){
+                return productJDBC.getProductByDescription(product.getDescription());
+            }
+            return null;
+        }
+        catch (Exception e){
+            throw new ProductException("NOT FOUND!").setDefaultException(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     public Product addProduct(Product product) throws ProductException {
@@ -34,7 +62,10 @@ public class ProductService {
     public Product updateProduct(Product product) throws ProductException {
         try{
 
-            repository.findById(product.getId());
+            Optional<Product> product_db = repository.findById(product.getId());
+            if(!product_db.isPresent())
+                throw new ProductException("Wrong Id!").setDefaultException(HttpStatus.NOT_ACCEPTABLE);
+            product.setCategories(product_db.get().getCategories());
             return repository.save(product);
         }
         // Add Error
@@ -47,7 +78,7 @@ public class ProductService {
         try{
             repository.findById(Id);
             repository.deleteById(Id);
-            return "Pass";
+            return "{\"message\":\"Successfully Deleted!\"}";
         }
         catch (Exception e){
             throw new ProductException("Wrong Id!").setDefaultException(HttpStatus.NOT_ACCEPTABLE);

@@ -9,33 +9,39 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/shop")
 public class ProductController {
     @Autowired
     private ProductService service;
 
-    @GetMapping("/getAllProduct")
+    @GetMapping("/product/getAllProduct")
     private List<Product> getAllProduct(){
         return service.getAllProduct();
     }
 
-    @PostMapping("/addProduct")
+    @PostMapping("/product/getProductByField")
+    private Product getProductByField(@RequestBody Product product) throws ProductException {
+        return service.getProductByField(product);
+    }
+
+
+    @PostMapping("/product/addProduct")
     private Product addProduct(@RequestBody Product product) throws ProductException {
         return service.addProduct(product);
     }
 
-    @PatchMapping("/updateProduct")
+    @PutMapping("/product/updateProduct")
     private Product updateProduct(@RequestBody Product product) throws ProductException {
         return service.updateProduct(product);
     }
 
-    @DeleteMapping("/deleteProduct/{id}")
-    public String deleteCategory(@PathVariable("id") int Id) throws ProductException {
+    @DeleteMapping("/product/deleteProduct/{id}")
+    public String deleteProduct(@PathVariable("id") int Id) throws ProductException {
         return service.deleteProduct(Id);
     }
 
     // Assigning
-    @GetMapping("/{pid}-with-{cid}")
+    @GetMapping("/product/{pid}-with-{cid}")
     public Product assignProduct(@PathVariable("pid") int pId, @PathVariable("cid") int cId) throws ProductException {
         return service.assignCategoryToProduct(pId,cId);
     }

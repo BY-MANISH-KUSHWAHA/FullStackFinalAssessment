@@ -9,27 +9,34 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/shop")
 public class CategoryController {
     @Autowired
     private CategoryService service;
 
-    @GetMapping("/getAllCategory")
+    @GetMapping("/category/getAllCategory")
     public List<Category> getAllCategory(){
-        return service.getAllMovie();
+        return service.getAllCategory();
     }
 
-    @PostMapping("/addCategory")
+    @PostMapping("/category/getCategoryByField")
+    public Category getCategoryByField(@RequestBody Category category) throws CategoryException {
+        return service.getCategoryByField(category);
+    }
+
+
+
+    @PostMapping("/category/addCategory")
     public Category addCategory(@RequestBody Category category) throws CategoryException {
         return service.saveCategory(category);
     }
 
-    @PatchMapping("/updateCategory")
+    @PutMapping("/category/updateCategory")
     public Category updateCategory(@RequestBody Category category) throws CategoryException {
         return service.updateCategory(category);
     }
 
-    @DeleteMapping("/deleteCategory/{id}")
+    @DeleteMapping("/category/deleteCategory/{id}")
     public String deleteCategory(@PathVariable("id") int Id) throws CategoryException {
         return service.deleteCategory(Id);
     }

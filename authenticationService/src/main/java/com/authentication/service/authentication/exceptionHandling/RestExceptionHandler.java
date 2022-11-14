@@ -18,6 +18,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> exceptionHandler(Exception err){
+        System.out.println(err);
         ErrorResponse errorResponse = new ErrorResponse();
 
         errorResponse.setErrorCode(HttpStatus.BAD_REQUEST.value());

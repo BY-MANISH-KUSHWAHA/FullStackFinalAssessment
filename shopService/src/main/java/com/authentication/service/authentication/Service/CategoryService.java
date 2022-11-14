@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -18,9 +19,27 @@ public class CategoryService {
     @Autowired
     private CategoryJDBC jdbcQuery;
 
-    public List<Category> getAllMovie(){
+    public List<Category> getAllCategory(){
         return repository.findAll();
     }
+
+    public Category getCategoryByField(Category category) throws CategoryException {
+        try{
+            if(category.getId()!=0){
+                return repository.findById(category.getId()).get();
+            }
+
+            if(category.getType()!=null){
+                return jdbcQuery.getCategoryByType(category.getType());
+            }
+            return null;
+        }
+        catch (Exception e){
+            throw new CategoryException("NOT FOUND!").setDefaultException(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
 
     public Category saveCategory(Category category) throws CategoryException {
         try{
@@ -40,7 +59,9 @@ public class CategoryService {
     public Category updateCategory(Category category) throws CategoryException {
         if(category.getId()==0){ throw new CategoryException("Id not found!.").setDefaultException(HttpStatus.NOT_FOUND);}
         try{
-            Category category_jb = repository.findById(category.getId()).get();
+            Optional<Category> category_jb = repository.findById(category.getId());
+            if(!category_jb.isPresent() | category_jb.get().getId()==0)
+                throw new CategoryException("Category Id not found!.").setDefaultException(HttpStatus.ALREADY_REPORTED);
             return repository.save(category);
         }
         catch (Exception e){
@@ -54,7 +75,7 @@ public class CategoryService {
         try{
             Category category_jb = repository.findById(Id).get();
             repository.deleteById(Id);
-            return "Successfully Deleted!";
+            return "{\"message\":\"Successfully Deleted!\"}";
         }
         catch (Exception e) {
             throw new CategoryException("Category Id not found!.").setDefaultException(HttpStatus.ALREADY_REPORTED);

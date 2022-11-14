@@ -51,7 +51,7 @@ public class UserService {
 
         if(!password.equals(confirmPassword))    throw new UserException("Password missed match.").setDefaultException(HttpStatus.UNAUTHORIZED);
 
-        return new User(new ObjectId("636284b798908a02aa6f0062"),username,email,password);
+        return new User(null,username,email,password);
     }
 
     public String signUp(Map<String,Object> userData) throws Exception {
@@ -69,6 +69,7 @@ public class UserService {
 
 
     public List<User> getAll(){
+        System.out.println(repository.findAll());
         return repository.findAll();
     }
 }

@@ -16,7 +16,7 @@ public class Product {
 
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) // If somechange happen then it will also call FK Registration class for updates.
+    @ManyToMany(cascade = CascadeType.ALL) // If somechange happen then it will also call FK Registration class for updates.
     //https://www.baeldung.com/jpa-cascade-remove-vs-orphanremoval
     @JoinColumn(name="category_id", referencedColumnName = "id")
     private List<Category> categories = new ArrayList<>();

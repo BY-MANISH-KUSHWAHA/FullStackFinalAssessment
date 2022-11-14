@@ -19,16 +19,26 @@ public class AuthController {
 
     @GetMapping(value = "/getToken/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public String createToken(@PathVariable("id") String id)  {
+        System.out.println(id);
         return  "{" +
                 "\"message\":"+"\"Token for user:"+id+"\","+
                 "\"token\":\""+tokenService.createToken(id)+"\"}";
     }
 
-    @GetMapping(value = "/getUser/{token}")
+    @GetMapping(value = "/getUserId/{token}")
     public String getUser(@PathVariable("token") String token)  {
         return  "{" +
                 "\"userId\":\""+tokenService.getUserIdFromToken(token)+"\"}";
     }
+
+    @GetMapping(value = "/getTokenRandom",produces = MediaType.APPLICATION_JSON_VALUE)
+    public String createToken_random()  {
+        return  "{" +
+                "\"message\":"+"\"Token for user:"+"id"+"\","+
+                "\"token\":\""+tokenService.createToken("Random")+"\"}";
+    }
+
+
 
 
 
