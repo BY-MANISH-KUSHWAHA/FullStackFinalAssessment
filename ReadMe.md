@@ -105,7 +105,7 @@
                     }
 ```
 
-## 5. Update Category
+## 6. Update Category
 ```
           Method: POST (Token Required)
           
@@ -117,7 +117,7 @@
                     }
 ```
 
-## 5. Delete Category
+## 7. Delete Category
 ```
           Method: DELETE (Token Required)
           
@@ -125,7 +125,7 @@
           
 ```
 
-## 6. Add Product
+## 8. Add Product
 ```
           Method: POST (Token Required)
           
@@ -138,7 +138,7 @@
                     }
 ```
 
-## 7. Update Product
+## 9. Update Product
 ```
           Method: POST (Token Required)
           
@@ -152,7 +152,7 @@
                     }
 ```
 
-## 8. Delete Product
+## 10. Delete Product
 ```
           Method: GET (Token Required)
           
@@ -160,7 +160,7 @@
           
 ```
 
-## 9. Connect Product with Category (MANY-TO-MANY)
+## 11. Connect Product with Category (MANY-TO-MANY)
 ```
           Method: GET (Token Required)
           
